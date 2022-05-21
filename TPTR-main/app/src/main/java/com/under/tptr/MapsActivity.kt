@@ -1,8 +1,6 @@
 package com.under.tptr
 
 import android.annotation.SuppressLint
-import android.location.Location
-import android.location.LocationListener
 import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -51,13 +49,26 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback{
             val latitude: Double = meMarker?.position?.latitude!!
             val longitude: Double = meMarker?.position?.longitude!!
 
-            Firebase.firestore
+            Log.e(">>>","LATITUD QUE SE SUBIRA A LA BASE DE DATOS $latitude")
+            Log.e(">>>","LONGITUD QUE SE SUBIRA A LA BASE DE DATOS $longitude")
+
+
+            val queryCurrentPack = Firebase.firestore
                 .collection("empresas")
                 .document(currentUser?.empresaNIT!!)
                 .collection("paquetes")
-                .document(pack?.guia!!).update("estado",PackageClient().DELIVERED_STATE).addOnCompleteListener {
-                    Log.e(">>>","Estado  cambiado")
-                }
+                .document(pack?.guia!!)
+
+            queryCurrentPack.update("estado",PackageClient().DELIVERED_STATE).addOnCompleteListener {
+                Log.e(">>>","Estado  cambiado")
+            }
+            queryCurrentPack.update("latitud",latitude).addOnCompleteListener {
+                Log.e(">>>","${pack?.guia}: Latitud  cambiada")
+            }
+            queryCurrentPack.update("longitud",longitude).addOnCompleteListener {
+                Log.e(">>>","${pack?.guia}: Longitud cambiada")
+            }
+
 
             Firebase.firestore
                 .collection("repartidores")
@@ -73,20 +84,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback{
                 .collection("paquetesEnDistribucion").get().addOnCompleteListener { task ->
                     val ids : ArrayList<String> = ArrayList()
                     for(document in task.result!!) ids.add("${document.get("id")}")
-                    lifecycleScope.launch(Dispatchers.IO){
-                        if(ids.size!=0){
-                            for(id in ids){
-                                var query = Firebase.firestore
-                                    .collection("empresas")
-                                    .document(currentUser?.empresaNIT!!)
-                                    .collection("paquetes")
-                                    .document(id)
-                                query.update("latitud",latitude).addOnCompleteListener {
-                                    Log.e(">>>","${id}: Latitud  cambiada")
-                                }
-                                query.update("longitud",longitude).addOnCompleteListener {
-                                    Log.e(">>>","${id}: Longitud cambiada")
-                                }
+                    if(ids.size!=0){
+                        for(id in ids){
+                            var query = Firebase.firestore
+                                .collection("empresas")
+                                .document(currentUser?.empresaNIT!!)
+                                .collection("paquetes")
+                                .document(id)
+                            query.update("latitud",latitude).addOnCompleteListener {
+                                Log.e(">>>","${id}: Latitud  cambiada")
+                            }
+                            query.update("longitud",longitude).addOnCompleteListener {
+                                Log.e(">>>","${id}: Longitud cambiada")
                             }
                         }
                     }
@@ -118,7 +127,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback{
 
         //interacciones basicas
         mMap.setOnMapClickListener {
-            editMarkerPosition(meMarker,it.latitude,it.longitude)
+           editMarkerPosition(meMarker,it.latitude,it.longitude)
+            Log.e(">>>","la latitud presionada es ${it.latitude}")
+            Log.e(">>>", "la longitud presionada es ${it.longitude}")
         }
     }
 

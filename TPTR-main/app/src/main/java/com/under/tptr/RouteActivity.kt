@@ -22,6 +22,7 @@ import com.under.tptr.recyclerPlan.PackagePlanAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class RouteActivity : AppCompatActivity(), PackageCurrentAdapter.Listener {
 
@@ -69,6 +70,7 @@ class RouteActivity : AppCompatActivity(), PackageCurrentAdapter.Listener {
     override fun onResume() {
         super.onResume()
         recoveryActualState()
+
     }
 
     private fun setAllWarehouseState() {
@@ -82,14 +84,12 @@ class RouteActivity : AppCompatActivity(), PackageCurrentAdapter.Listener {
                     //
                     ids.add("${document.get("id")}")
                 }
-                lifecycleScope.launch(Dispatchers.IO) {
-                    if (ids.size != 0) {
-                        for (id in ids) {
-                            Firebase.firestore.collection("empresas")
-                                .document(currentUser?.empresaNIT!!)
-                                .collection("paquetes")
-                                .document(id).update("estado", PackageClient().WAREHOUSE_STATE)
-                        }
+                if (ids.size != 0) {
+                    for (id in ids) {
+                        Firebase.firestore.collection("empresas")
+                            .document(currentUser?.empresaNIT!!)
+                            .collection("paquetes")
+                            .document(id).update("estado", PackageClient().WAREHOUSE_STATE)
                     }
                 }
             }
@@ -114,6 +114,9 @@ class RouteActivity : AppCompatActivity(), PackageCurrentAdapter.Listener {
                             }.await()
                         }
                     }
+                    withContext(Dispatchers.Main){
+                        if(adapter.itemCount == 0) onZeroPackagesListener()
+                    }
                 }
             }
     }
@@ -127,12 +130,16 @@ class RouteActivity : AppCompatActivity(), PackageCurrentAdapter.Listener {
     }
 
     override fun onZeroPackagesListener() {
-        Toast.makeText(this,R.string.finish_day, Toast.LENGTH_LONG)
+        Toast.makeText(this,R.string.finish_day, Toast.LENGTH_LONG).show()
         Firebase.firestore
             .collection("repartidores")
             .document(currentUser?.id!!)
             .update("estado",DeliveryMan().NO_DELIVERING_STATE).addOnCompleteListener {
                 Log.e(">>>","Se ha cambiado el estado del deliveryMan a NO_DELIVERING")
+                val intent = Intent(this, StartDistributionActivity::class.java).apply {
+                    putExtra("currentUser", Gson().toJson(currentUser))
+                }
+                startActivity(intent)
             }
     }
 
