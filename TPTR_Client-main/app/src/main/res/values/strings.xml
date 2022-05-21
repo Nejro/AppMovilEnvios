@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">TPTR_Client</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="search_guide_hint">Ingresa el número de guía</string>
+    <string name="search_btn">RASTREAR</string>
+    <string name="insert_guide_number">Ingresa el número de guía</string>
+    <string name="insert_name_business">Ingresa el nombre de la empresa</string>
+    <string name="empty_fields">No se permiten campos vacíos</string>
+    <string name="invalid_business_name">No se ha encontrado la empresa</string>
+    <string name="invalid_guide">No sen ha encontrado la guia</string>
+</resources>
