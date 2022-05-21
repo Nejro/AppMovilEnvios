@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">TPTR</string>
+    <string name="title_activity_maps">MapsActivity</string>
+
+    <string name="update_button">ACTUALIZAR</string>
+    <string name="select_location">Selecciona tu ubicación</string>
+    <string name="default_location_msg">(Tu ubicación actual está establecida por defecto)</string>
+    <string name="login_button">INGRESAR</string>
+    <string name="login_email_hint">Correo electrónico</string>
+    <string name="login_password_hint">Contraseña</string>
+    <string name="start_distribution">Comenzar distribución</string>
+    <string name="add_packages">(Agrega los paquetes que se entregarán en la ruta mediante la guía)</string>
+    <string name="add_button">AGREGAR</string>
+    <string name="continue_button">CONTINUAR</string>
+    <string name="traking_guide_hing">Guía de rastreo</string>
+    <string name="guide_not_found">No se ha encontrado la guia ingresada</string>
+    <string name="empty_fields">No se permiten campos vacíos</string>
+    <string name="pack_delivered_state">El paquete ya ha sido entregado</string>
+    <string name="pack_distribution_state">El paquete ya se encuentra en distribución</string>
+    <string name="incorrect_password">La contraseña ingresada no coincide</string>
+    <string name="incorrect_email">El correo ingresado no obtuvo ninguna coincidencia</string>
+    <string name="pack_in_list">El paquete ya se encuentra en la lista</string>
+    <string name="current_packages">Paquetes en curso:</string>
+    <string name="name_info">Nombre:</string>
+    <string name="id_info">ID:</string>
+    <string name="email_info">EMAIL:</string>
+    <string name="tel_info">Teléfono:</string>
+    <string name="address_info">Dirección:</string>
+    <string name="client_info">Información del cliente:</string>
+    <string name="deliver_button">ENTREGAR</string>
+    <string name="finish_day">Has terminado todas tus entregas el día de hoy</string>
+    <string name="finish_btn">FINALIZAR</string>
+</resources>
